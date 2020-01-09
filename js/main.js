@@ -14,8 +14,31 @@
     $('.header').after('<div class="sticky-header"></div>');
     $('.sticky-header').html(headerClone);
     var headerSelector = document.querySelector(".sticky-header");
+    var burgerMenu = headerSelector.querySelectorAll('.line-menu');
+    var handleLinkColor = headerSelector.querySelectorAll("a");
     var headroom = new Headroom(headerSelector, {
-        offset: 100
+        offset: 100,
+        onTop : function() {
+            handleLinkColor.forEach(e=>{
+                e.removeAttribute('style');
+                e.setAttribute('style','color: white')
+            });
+            burgerMenu.forEach(e=>{
+                e.removeAttribute('style');
+                e.setAttribute('style',"background-color:white");
+            })
+        },
+        onNotTop : function() {
+            handleLinkColor.forEach((e,i)=>{
+                if(handleLinkColor.length-1 === i) return null
+                e.removeAttribute('style');
+                e.setAttribute('style','color: #263a4f;');
+            });
+            burgerMenu.forEach(e=>{
+                e.removeAttribute('style');
+                e.setAttribute('style',"background-color:#000");
+            })
+        }
     });
 
     headroom.init();
@@ -203,34 +226,6 @@
     }); 
 
 /*=========================================================================
-    Testimonial Carousel
-=========================================================================*/
-    $('#testimonial-carousel').owlCarousel({
-        loop: true,
-        margin: 10,
-        center: false,
-        autoplay: true,
-        smartSpeed: 500,
-        nav: false,
-        navText: ['<i class="fa fa-caret-left"></i>', '<i class="fa fa-caret-right"></i>'],
-        dots: true,
-        responsive : {
-            0 : {
-                items: 1
-            },
-            480 : {
-                items: 1,
-            },
-            768 : {
-                items: 1,
-            },
-            992 : {
-                items: 2,
-            }
-        }
-    });
-
-/*=========================================================================
     Sponsor Carousel
 =========================================================================*/
     $('#sponsor-carousel').owlCarousel({
@@ -288,41 +283,7 @@
         numeratio: true,
         infinigall: true
     });
-             
-/*=========================================================================
-	MAILCHIMP
-=========================================================================*/ 
-
-    if ($('.subscribe_form').length>0) {
-        /*  MAILCHIMP  */
-        $('.subscribe_form').ajaxChimp({
-            language: 'es',
-            callback: mailchimpCallback,
-            url: "//alexatheme.us14.list-manage.com/subscribe/post?u=48e55a88ece7641124b31a029&amp;id=361ec5b369" 
-        });
-    }
-
-    function mailchimpCallback(resp) {
-        if (resp.result === 'success') {
-            $('#subscribe-result').addClass('subs-result');
-            $('.subscription-success').text(resp.msg).fadeIn();
-            $('.subscription-error').fadeOut();
-
-        } else if(resp.result === 'error') {
-            $('#subscribe-result').addClass('subs-result');
-            $('.subscription-error').text(resp.msg).fadeIn();
-        }
-    }
-    $.ajaxChimp.translations.es = {
-        'submit': 'Submitting...',
-        0: 'We have sent you a confirmation email',
-        1: 'Please enter your email',
-        2: 'An email address must contain a single @',
-        3: 'The domain portion of the email address is invalid (the portion after the @: )',
-        4: 'The username portion of the email address is invalid (the portion before the @: )',
-        5: 'This email address looks fake or invalid. Please enter a real email address'
-    };
-
+    
 /*=========================================================================
     Google Map Settings
 =========================================================================*/
@@ -356,3 +317,16 @@
     
 
 })(jQuery);
+
+/*=========================================================================
+	FAQ
+=========================================================================*/
+
+const items = document.querySelectorAll(".accordion a");
+
+function toggleAccordion(){
+  this.classList.toggle('active');
+  this.nextElementSibling.classList.toggle('active');
+}
+
+items.forEach(item => item.addEventListener('click', toggleAccordion));
