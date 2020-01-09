@@ -36,7 +36,7 @@
             });
             burgerMenu.forEach(e=>{
                 e.removeAttribute('style');
-                e.setAttribute('style',"background-color:#000");
+                e.setAttribute('style',"background-color:#263a4fb8");
             })
         }
     });
@@ -330,3 +330,19 @@ function toggleAccordion(){
 }
 
 items.forEach(item => item.addEventListener('click', toggleAccordion));
+
+/*=========================================================================
+	Modales
+=========================================================================*/
+console.log(typeof(MicroModal))
+MicroModal.init({
+    openTrigger: 'data-custom-open',
+    closeTrigger: 'data-custom-close',
+    disableScroll: true,
+    onShow: function(){
+        console.log("Dimelo flow")
+    }
+
+});
+
+MicroModal.show('modal-1');
