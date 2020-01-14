@@ -448,7 +448,7 @@ document.getElementById("footer-year").innerHTML = year;
 	Fake Instagram Data
 =========================================================================*/
 
-if (window.location.pathname.split("/")[2] === "home.html"){
+if (window.location.pathname.split("/")[2] === "home.html") {
   let instagramContainer = document.getElementById("instagram-items");
   const token = "2106374724.1677ed0.6dafced7f08244ba9572a4ae97280e84";
   const endpoint = "https://api.instagram.com/v1/users/self/media/recent";
@@ -469,6 +469,17 @@ if (window.location.pathname.split("/")[2] === "home.html"){
     .catch(e => {
       console.error(e);
     });
+
+  $(function() {
+    axios
+      .get(`https://api.instagram.com/v1/users/self/?access_token=${token}`)
+      .then(({ data: { data: data } }) => {
+        document.getElementById("bio-ig").innerHTML = `${data.bio}`;
+      })
+      .catch(e => {
+        console.error(e);
+      });
+  });
 }
 
 const post = (urlImage, linkPost, isVideo) => {
@@ -509,7 +520,7 @@ modal1Form.addEventListener("submit", function(e) {
     fullname,
     adress,
     zip,
-    email:emailModal1,
+    email: emailModal1,
     phone
   };
   modal1Form.reset();
@@ -517,7 +528,7 @@ modal1Form.addEventListener("submit", function(e) {
   $("#modal-2").modal("show");
 });
 
-if (window.location.pathname.split("/")[2] === "home.html"){
+if (window.location.pathname.split("/")[2] === "home.html") {
   var estimateModal = document.getElementById("get-estimate-modal");
   estimateModal.addEventListener("click", function() {
     $("#modal-3").modal("toggle");
@@ -528,21 +539,30 @@ if (window.location.pathname.split("/")[2] === "home.html"){
 /*=========================================================================
 	Contractor Form
 =========================================================================*/
-if (window.location.pathname.split("/")[2] === "contractor.html"){
-  var contractForm = document.getElementById('contractor-form')
+if (window.location.pathname.split("/")[2] === "contractor.html") {
   
-  contractForm.addEventListener('submit',function(e){
+  var contractForm = document.getElementById("contractor-form");
+  var messenger = document.getElementById("contract-form-messages");
+
+  contractForm.addEventListener("submit", function(e) {
     e.preventDefault();
-    var companyName = contractForm['company-name'].value;
-    var name = contractForm['name'].value;
-    var email = contractForm['email'].value;
-    var phone = contractForm['phone'].value;
-    var altPhone = contractForm['alt-phone'].value;
-    var specialties = contractForm['specialties'].value;
-    var location = contractForm['location'].value;
-    var licenseNumber = contractForm['license-number'].value;
-    var financing = contractForm['financing'].value;
-    var zipCode = contractForm['zip-code'].value;
+    var companyName = contractForm["company-name"].value;
+    var name = contractForm["name"].value;
+    var email = contractForm["email"].value;
+    var phone = contractForm["phone"].value;
+    var altPhone = contractForm["alt-phone"].value;
+    var specialties = contractForm["specialties"].value;
+    var location = contractForm["location"].value;
+    var licenseNumber = contractForm["license-number"].value;
+    var financing = contractForm["financing"].value;
+    var zipCode = contractForm["zip-code"].value;
+
+    if (name.length < 4) {
+      messenger.innerHTML = "";
+      messenger.innerHTML = "The name should have at least four (4) letters";
+      messenger.classList.remove("d-none");
+      return setTimeout(function(){clearMessageError(messenger)}, 8000);
+    }
 
     var data = {
       companyName,
@@ -555,8 +575,114 @@ if (window.location.pathname.split("/")[2] === "contractor.html"){
       licenseNumber,
       financing,
       zipCode
+    };
+    
+    messenger.innerHTML = "";
+
+    if (companyName.length < 4) {
+      messenger.innerHTML = "The name should have at least four (4) letters";
+      messenger.classList.remove("d-none");
+      return setTimeout(function(){clearMessageError(messenger)}, 8000);
     }
-    //console.log(data)
+
+    if (name.length < 4) {
+      messenger.innerHTML = "The name should have at least four (4) letters";
+      messenger.classList.remove("d-none");
+      return setTimeout(function(){clearMessageError(messenger)}, 8000);
+    }
+
+    if (phone.length < 7) {
+      messenger.innerHTML = "The phone should have at least four (7) numbers";
+      messenger.classList.remove("d-none");
+      return setTimeout(function(){clearMessageError(messenger)}, 8000);
+    }
+
+    if (altPhone.length < 7) {
+      messenger.innerHTML = "The alternative phone should have at least four (7) numbers";
+      messenger.classList.remove("d-none");
+      return setTimeout(function(){clearMessageError(messenger)}, 8000);
+    }
+  
+    if (specialties.length < 5) {
+      messenger.innerHTML = "The Specialties must be at least 5 characters long";
+      messenger.classList.remove("d-none");
+      return setTimeout(function(){clearMessageError(messenger)}, 8000);
+    }
+
+    if (location.length < 5) {
+      messenger.innerHTML = "The Location must be at least 5 characters long";
+      messenger.classList.remove("d-none");
+      return setTimeout(function(){clearMessageError(messenger)}, 8000);
+    }
+
+    if (licenseNumber.length < 12) {
+      messenger.innerHTML = "The License Number must be at least 12 characters long";
+      messenger.classList.remove("d-none");
+      return setTimeout(function(){clearMessageError(messenger)}, 8000);
+    }
+
+    console.log(data)
+    messageSuccess(messenger);
     contractForm.reset();
-  })
+  });
+}
+
+/*=========================================================================
+	Contact Form
+=========================================================================*/
+if (window.location.pathname.split("/")[2] === "home.html"){
+  var contactForm = document.getElementById("contact-form");
+  var messenger = document.getElementById("contact-form-messages");
+  
+  contactForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+  
+    var name = contactForm["name"].value;
+    var email = contactForm["email"].value;
+    var message = contactForm["message"].value;
+  
+    if (name.length < 4) {
+      messenger.innerHTML = "";
+      messenger.innerHTML = "The name should have at least four (4) letters";
+      messenger.classList.remove("d-none");
+      return setTimeout(function(){clearMessageError(messenger)}, 8000);
+    }
+  
+    if (message.length < 20) {
+      messenger.innerHTML = "";
+      messenger.innerHTML = "The message must be at least 20 characters long";
+      messenger.classList.remove("d-none");
+      return setTimeout(function(){clearMessageError(messenger)}, 8000);
+    }
+    /*
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(email) === false){
+      messenger.innerHTML = "";
+      messenger.innerHTML = "Invalid Email";
+      messenger.classList.remove("d-none");
+    }
+    */
+  
+    var data = {
+      name,
+      email,
+      message
+    };
+    //console.log(data);
+  
+    messageSuccess(messenger);
+    contactForm.reset();
+  });
+}
+
+function clearMessageError(e) {
+  e.innerHTML = "";
+  e.classList.add("d-none");
+}
+
+function messageSuccess(e){
+  console.log(e)
+  $('#modal-4').modal('show');
+  e.classList.remove('alert-danger');
+  e.classList.add('alert-success');
+  e.innerHTML = 'Your message has been sent successfully, we will contact you soon.';
 }

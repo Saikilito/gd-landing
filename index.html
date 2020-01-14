@@ -1,22 +1,56 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en_US"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="en_US"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en_US"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js" lang="en">
+<html class="no-js" lang="en_US">
 <!--<![endif]-->
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <title>Green Department - Departamento Verde</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../img/favicon1-32x32.png">
 
-    <title>Departamento Verde - Green Department</title>
-    <link rel="shortcut icon" type="image/x-icon"
-        href="../img/favicon1-32x32.png">
+    <link rel="canonical" href="https://www.greendepartment.org/en/home.html">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="es_ES">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Green Department - Departamento Verde">
+    <meta property="og:site_name" content="Green Department">
+    <meta property="og:url" content="https://www.greendepartment.org/en/home.html/">
+    <meta name="og:country-name" content="USA"/>
+    <meta name="og:locality" content="Miami"/>
+    
+    <link rel="shortlink" href="https://www.greendepartment.org/">
+    <meta name="fb:id" content="122519301968747" />
+    <meta property="fb:admins" content="122519301968747" />
+    <meta name="og:email" content=" info@greendepartment.org"/>
 
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Departamento Verde - Green Department">
+    <meta name="twitter:image" content="../img/Screened-AC-Sello-928x1024-1-928x1024.png">
+
+    <meta name="keywords" content="Improve, home, repairs, services, windows, doors, air conditioners, solar panels, contractors, homeowners, house, paint, insure, trust"/>
+    <meta name="description" content="Find home repair, maintenance and improvement services, window services, painting, air conditioning, impact doors, solar panels, locksmithing, legal permits and warranty">
+    <meta name="copyright"content="Green Department">
+    <meta name="robots" content="index,follow" />
+    <meta name="Classification" content="Business">
+
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="alternate" href="https://www.greendepartment.org/es/home.html/" hreflang="es">
+    <link rel="icon" href="../img/cropped-favicon1-32x32.png" sizes="32x32">
+    <link rel="icon" href="../img/cropped-favicon1-192x192.png" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed"
+        href="../img/cropped-favicon1-180x180.png">
+    <meta name="msapplication-TileImage"
+    content="../img/cropped-favicon1-270x270.png">
+
+    <link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.greendepartment.org/xmlrpc.php?rsd">
+    
+    
     <link rel="stylesheet" href="../css/main.css">
-
     <link rel="stylesheet" href="../css/responsive.css">
     <script src="../js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 </head>
@@ -38,14 +72,14 @@
             })
             .then(function (data) {
                 //console.log(data.languages, data.languages.split(','), data.languages.split(',')[0].indexOf('es'));
-                if( data.languages.split(',')[0].indexOf('es') !== -1 ){
-                    return window.location.href =`${URL_base}/es/home.html`;
+                if (data.languages.split(',')[0].indexOf('es') !== -1) {
+                    return window.location.href = `${URL_base}/es/home.html`;
                 }
-                window.location.href =`${URL_base}/en/home.html`;
+                window.location.href = `${URL_base}/en/home.html`;
             })
             .catch(err => {
                 console.error(err);
-                window.location.href =`${URL_base}/en/home.html`;
+                window.location.href = `${URL_base}/en/home.html`;
             });
     </script>
 
