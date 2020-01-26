@@ -445,51 +445,98 @@ var year = new Date().getFullYear();
 document.getElementById("footer-year").innerHTML = year;
 
 /*=========================================================================
-	Fake Instagram Data
+  Instagram
 =========================================================================*/
 
 if (window.location.pathname.split("/")[2] === "home.html") {
-  let instagramContainer = document.getElementById("instagram-items");
   const token = "2106374724.1677ed0.6dafced7f08244ba9572a4ae97280e84";
-  const endpoint = "https://api.instagram.com/v1/users/self/media/recent";
-  const limit = 12;
-  axios
-    .get(`${endpoint}?access_token=${token}&count=${limit}`)
-    .then(({ data: { data: posts } }) => {
-      //console.log(posts);
-      instagramContainer.innerHTML = ``;
-      posts.forEach(e => {
-        instagramContainer.innerHTML += post(
-          e.images.low_resolution.url,
-          e.link,
-          e.videos
-        );
+  const endpoint = "https://api.instagram.com/v1/users/self";
+
+  let igContainer = $("#instagram-items");
+  let indexIgItem = 0;
+
+  // Call API Self and Set Info Instagram
+  $(function() {
+    axios
+      .get(`${endpoint}/?access_token=${token}`)
+      .then(({ data: { data: data } }) => {
+        document.getElementById("bio-ig").innerHTML = `${data.bio}`;
+      })
+      .catch(err => {
+        console.error(err);
       });
-    })
+  });
+
+  // Call API Media
+  let postsArray = axios
+    .get(`${endpoint}/media/recent?access_token=${token}`)
+    .then(({ data: { data: posts } }) => posts)
     .catch(e => {
       console.error(e);
     });
 
-  $(function() {
-    axios
-      .get(`https://api.instagram.com/v1/users/self/?access_token=${token}`)
-      .then(({ data: { data: data } }) => {
-        document.getElementById("bio-ig").innerHTML = `${data.bio}`;
-      })
-      .catch(e => {
-        console.error(e);
+  // Set firts posts
+  postsArray
+    .then(posts => {
+      posts.forEach((e, i) => {
+        if (window.screen.width < 500 && i < 4) {
+          igContainer.append(
+            post(e.images.low_resolution.url, e.link, e.videos)
+          );
+          indexIgItem = indexIgItem + 1;
+        }
+        if (window.screen.width > 500 && i < 9) {
+          igContainer.append(
+            post(e.images.low_resolution.url, e.link, e.videos)
+          );
+          indexIgItem = indexIgItem + 1;
+        }
       });
+    })
+    .catch(err => console.error(err));
+
+  // Set post per click
+  indexIgItem = indexIgItem - 4;
+  const loadButton = $("#loadMoreButton");
+  loadButton.click(() => {
+    console.log("Index init: ", indexIgItem);
+    postsArray.then(posts => {
+      posts.forEach((e, i) => {
+        if (window.screen.width < 500) {
+          if (indexIgItem + 1 < i && i < indexIgItem + 4 && i < posts.length) {
+            igContainer.append(
+              post(e.images.low_resolution.url, e.link, e.videos)
+            );
+          }
+        }
+        if (window.screen.width > 500) {
+          if (indexIgItem < i && i < indexIgItem + 4 && i < posts.length) {
+            igContainer.append(
+              post(e.images.low_resolution.url, e.link, e.videos)
+            );
+          }
+        }
+        if (indexIgItem + 3 >= posts.length - 1) {
+          loadButton.addClass("d-none");
+        }
+      });
+    });
+    if (window.screen.width > 500) {
+      indexIgItem = indexIgItem + 3;
+    } else {
+      indexIgItem = indexIgItem + 2;
+    }
   });
 }
 
 const post = (urlImage, linkPost, isVideo) => {
-  return `<div class="col-lg-4 col-sm-6 padding-15">
+  return `<div class="col-lg-4 col-sm-6 padding-15 loadMore">
         <a href="${linkPost}" target="_blank" class="view-icon ajax-popup-link">
         <div class="project-item">
             ${(isVideo &&
               `<svg class="Svg-instagram-video-icon" aria-hidden="true" data-fa-processed="" data-prefix="fa" data-icon="play" role="img" xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"></path></svg>`) ||
               ``}
-                <img src="${urlImage}" class="ig-post-img" alt="projects">
+                <img src="${urlImage}" data-original="${urlImage}" class="lazyload ig-post-img" alt="instagram-item" width="350" height="350" >
                 <!--div class="overlay"></div>
                 <a href="${linkPost}" target="_blank" class="view-icon ajax-popup-link"> <i class="fas fa-expand"></i></a>
                 <div class="projects-content">
@@ -505,8 +552,13 @@ const post = (urlImage, linkPost, isVideo) => {
 	Modals
 =========================================================================*/
 var modal1Form = document.getElementById("modal-1-form");
+var spinnerModal1 = document.getElementById("spinner-loader-modal-1");
+var modalData = {};
+
 modal1Form.addEventListener("submit", function(e) {
   e.preventDefault();
+
+  var messenger = document.getElementById("messages-form");
 
   var service = modal1Form["service"].value;
   var fullname = modal1Form["fullname"].value;
@@ -515,7 +567,46 @@ modal1Form.addEventListener("submit", function(e) {
   var emailModal1 = modal1Form["email"].value;
   var phone = modal1Form["phone"].value;
 
-  var data = {
+  if (service === "none") {
+    console.log("service");
+    messageError(messenger, "Please choose a service");
+    return modal1Form["service"].focus();
+  }
+  if (fullname.length < 4) {
+    console.log("fullname");
+    messageError(messenger, "The name should have at least four (4) letters");
+    return modal1Form["fullname"].focus();
+  }
+  if (adress.length < 10) {
+    console.log("adress");
+    messageError(messenger, "The adress should have at least ten (10) letters");
+    return modal1Form["adress"].focus();
+  }
+  console.log(zip);
+  if (zip.length < 3 || zip === "") {
+    console.log("zip");
+    messageError(messenger, "The zip code is not valid");
+    return modal1Form["zip"].focus();
+  }
+  if (
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      emailModal1
+    ) === false
+  ) {
+    console.log("email");
+    messageError(messenger, "The email is not valid");
+    return modal1Form["email"].focus();
+  }
+  if (phone.length < 11) {
+    console.log("phone");
+    messageError(
+      messenger,
+      "The phone should have <br> at least seven (11) digits"
+    );
+    return modal1Form["phone"].focus();
+  }
+
+  modalData = {
     service,
     fullname,
     adress,
@@ -523,9 +614,54 @@ modal1Form.addEventListener("submit", function(e) {
     email: emailModal1,
     phone
   };
+
+  console.log(modalData);
+
+  try {    
+    requestData("estimate_1", modalData, "modal-1", spinnerModal1);
+  } catch (error) {
+    console.error(error);
+  }
+
   modal1Form.reset();
-  $("#modal-1").modal("toggle");
-  $("#modal-2").modal("show");
+});
+
+var modal1twoForm = document.getElementById("modal-1-two-form");
+var spinnerModal2 = document.getElementById("spinner-loader-modal-2");
+
+modal1twoForm.addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  var messenger = document.getElementById("messages-form-two");
+  var emergency = modal1twoForm["inputEmergencySelect"].value;
+  var owner = modal1twoForm["inputOwnerSelect"].value;
+  var project = modal1twoForm["textAreaProject"].value;
+
+  if (project.length < 15) {
+    console.log("Project");
+    messageError(
+      messenger,
+      "The text should have <br> at least fifteen (15) letters"
+    );
+    return modal1twoForm["textAreaProject"].focus();
+  }
+
+  modalData = {
+    ...modalData,
+    emergency,
+    owner,
+    project
+  };
+
+  console.log(modalData);
+
+  try {
+    requestData("estimate_2", modalData, "modal-2", spinnerModal2);
+  } catch (error) {
+    console.error(error);
+  }
+
+  modal1twoForm.reset();
 });
 
 if (window.location.pathname.split("/")[2] === "home.html") {
@@ -540,12 +676,13 @@ if (window.location.pathname.split("/")[2] === "home.html") {
 	Contractor Form
 =========================================================================*/
 if (window.location.pathname.split("/")[2] === "contractor.html") {
-  
   var contractForm = document.getElementById("contractor-form");
   var messenger = document.getElementById("contract-form-messages");
+  var spinnerContracttor = document.getElementById("spinner-contractor");
 
   contractForm.addEventListener("submit", function(e) {
     e.preventDefault();
+
     var companyName = contractForm["company-name"].value;
     var name = contractForm["name"].value;
     var email = contractForm["email"].value;
@@ -557,11 +694,59 @@ if (window.location.pathname.split("/")[2] === "contractor.html") {
     var financing = contractForm["financing"].value;
     var zipCode = contractForm["zip-code"].value;
 
+    messenger.innerHTML = "";
+
+    if (companyName.length < 4) {
+      return messageError(
+        messenger,
+        "The name should have at least four (4) letters"
+      );
+    }
     if (name.length < 4) {
-      messenger.innerHTML = "";
-      messenger.innerHTML = "The name should have at least four (4) letters";
-      messenger.classList.remove("d-none");
-      return setTimeout(function(){clearMessageError(messenger)}, 8000);
+      return messageError(
+        messenger,
+        "The name should have at least four (4) letters"
+      );
+    }
+    if (
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        email
+      ) === false
+    ) {
+      return messageError(messenger, "Invalid Email");
+    }
+    if (phone.length < 7) {
+      return messageError(
+        messenger,
+        "The phone should have at least four (7) numbers"
+      );
+    }
+    if (altPhone.length < 7) {
+      return messageError(
+        messenger,
+        "The alternative phone should have at least four (7) numbers"
+      );
+    }
+    if (specialties.length < 5) {
+      return messageError(
+        messenger,
+        "The Specialties must be at least five (5) characters long"
+      );
+    }
+    if (location.length < 5) {
+      return messageError(
+        messenger,
+        "The Location must be at least five (5) characters long"
+      );
+    }
+    if (licenseNumber.length < 12) {
+      return messageError(
+        messenger,
+        "The License Number must be at least twelve (12) characters long"
+      );
+    }
+    if (zipCode < parseInt(9)) {
+      return messageError(messenger, "The Zip Code is not valid");
     }
 
     var data = {
@@ -576,53 +761,13 @@ if (window.location.pathname.split("/")[2] === "contractor.html") {
       financing,
       zipCode
     };
-    
-    messenger.innerHTML = "";
 
-    if (companyName.length < 4) {
-      messenger.innerHTML = "The name should have at least four (4) letters";
-      messenger.classList.remove("d-none");
-      return setTimeout(function(){clearMessageError(messenger)}, 8000);
+    try {
+      requestData("contractor", data, messenger, spinnerContracttor);
+    } catch (error) {
+      console.error(error);
     }
 
-    if (name.length < 4) {
-      messenger.innerHTML = "The name should have at least four (4) letters";
-      messenger.classList.remove("d-none");
-      return setTimeout(function(){clearMessageError(messenger)}, 8000);
-    }
-
-    if (phone.length < 7) {
-      messenger.innerHTML = "The phone should have at least four (7) numbers";
-      messenger.classList.remove("d-none");
-      return setTimeout(function(){clearMessageError(messenger)}, 8000);
-    }
-
-    if (altPhone.length < 7) {
-      messenger.innerHTML = "The alternative phone should have at least four (7) numbers";
-      messenger.classList.remove("d-none");
-      return setTimeout(function(){clearMessageError(messenger)}, 8000);
-    }
-  
-    if (specialties.length < 5) {
-      messenger.innerHTML = "The Specialties must be at least 5 characters long";
-      messenger.classList.remove("d-none");
-      return setTimeout(function(){clearMessageError(messenger)}, 8000);
-    }
-
-    if (location.length < 5) {
-      messenger.innerHTML = "The Location must be at least 5 characters long";
-      messenger.classList.remove("d-none");
-      return setTimeout(function(){clearMessageError(messenger)}, 8000);
-    }
-
-    if (licenseNumber.length < 12) {
-      messenger.innerHTML = "The License Number must be at least 12 characters long";
-      messenger.classList.remove("d-none");
-      return setTimeout(function(){clearMessageError(messenger)}, 8000);
-    }
-
-    console.log(data)
-    messageSuccess(messenger);
     contractForm.reset();
   });
 }
@@ -630,59 +775,130 @@ if (window.location.pathname.split("/")[2] === "contractor.html") {
 /*=========================================================================
 	Contact Form
 =========================================================================*/
-if (window.location.pathname.split("/")[2] === "home.html"){
+if (window.location.pathname.split("/")[2] === "home.html") {
   var contactForm = document.getElementById("contact-form");
   var messenger = document.getElementById("contact-form-messages");
-  
+  var spinnerContact = document.getElementById('spinner-contact');
+  console.log(spinnerContact)
   contactForm.addEventListener("submit", function(e) {
+    console.log(spinnerContact)
     e.preventDefault();
-  
+
     var name = contactForm["name"].value;
     var email = contactForm["email"].value;
     var message = contactForm["message"].value;
-  
+
+    messenger.innerHTML = "";
+
     if (name.length < 4) {
-      messenger.innerHTML = "";
-      messenger.innerHTML = "The name should have at least four (4) letters";
-      messenger.classList.remove("d-none");
-      return setTimeout(function(){clearMessageError(messenger)}, 8000);
+      return messageError(
+        messenger,
+        "The name should have at least four (4) letters"
+      );
     }
-  
+
+    if (
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        email
+      ) === false
+    ) {
+      return messageError(messenger, "Invalid Email");
+    }
+
     if (message.length < 20) {
-      messenger.innerHTML = "";
-      messenger.innerHTML = "The message must be at least 20 characters long";
-      messenger.classList.remove("d-none");
-      return setTimeout(function(){clearMessageError(messenger)}, 8000);
+      return messageError(
+        messenger,
+        "The message must be at least 20 characters long"
+      );
     }
-    /*
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(email) === false){
-      messenger.innerHTML = "";
-      messenger.innerHTML = "Invalid Email";
-      messenger.classList.remove("d-none");
-    }
-    */
-  
-    var data = {
+
+    const data = {
       name,
       email,
       message
     };
-    //console.log(data);
-  
-    messageSuccess(messenger);
+
+    try {
+      requestData("message", data, messenger, spinnerContact);
+    } catch (error) {
+      console.error(error);
+    }
+
     contactForm.reset();
   });
 }
 
-function clearMessageError(e) {
-  e.innerHTML = "";
-  e.classList.add("d-none");
+function messageSuccess(e) {
+  $("#modal-4").modal("show");
+  e.classList.remove("alert-danger");
+  e.classList.add("alert-success");
+  e.innerHTML =
+    "Your message has been sent successfully, we will contact you soon.";
 }
 
-function messageSuccess(e){
-  console.log(e)
-  $('#modal-4').modal('show');
-  e.classList.remove('alert-danger');
-  e.classList.add('alert-success');
-  e.innerHTML = 'Your message has been sent successfully, we will contact you soon.';
+
+function messageError(e, message) {
+  e.innerHTML = message;
+  e.classList.remove("d-none");
+  return setTimeout(function() {
+    e.innerHTML = "";
+    e.classList.add("d-none");
+  }, 8000);
+}
+
+const requestData = async (URI, data, messenger, spinner) => {
+  var URI_PROD = `https://nextgraphtest.firebaseapp.com/api/landing/email/${URI}`;
+  //var URI_DEV = `http://localhost:5000/api/landing/email/${URI}`;
+  var URI_TEST = `http://localhost:5001/nextgraphtest/us-central1/app/api/landing/email/${URI}`;
+
+  console.log(messenger);
+  spinner.classList.remove('d-none');
+
+  try {
+    await fetch(URI_TEST, {
+      method: "POST",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: JSON.stringify({ ...data })
+    })
+      .then(res => {
+        
+        console.log("Message Success: ", res);
+        spinner.classList.add('d-none');
+        
+        if (messenger === "modal-1") {
+          
+          $("#modal-1").modal("hide");
+          $("#modal-1-two").modal("show");
+  
+        } else if (messenger === "modal-2") {
+          
+          $("#modal-1-two").modal("toggle");
+          $("#modal-2").modal("show");
+  
+        } else {
+          
+          return messageSuccess(messenger);
+  
+        }
+
+        if(res.status >= 400){
+          $("#modal-5").modal("show");  
+        }
+      })
+      .catch(err => {
+        $("#modal-5").modal("show");
+        console.log("Dimelo flow")
+        console.error(err);
+        spinner.classList.add('d-none');
+      });
+  } catch (error) {
+    console.log(error)
+    $("#modal-5").modal("show");
+  }
+
+
+
 }

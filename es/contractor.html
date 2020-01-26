@@ -51,7 +51,7 @@
 
     <link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.greendepartment.org/xmlrpc.php?rsd">
 
-    
+
     <link rel="stylesheet" href="../css/fontawesome.min.css">
     <link rel="stylesheet" href="../css/themify-icons.css">
     <link rel="stylesheet" href="../css/elegant-line-icons.css">
@@ -78,7 +78,7 @@
         <div class="spinner"></div>
     </div>
 
-    <header id="header" class="header " style="background-color: #282222; z-index: 2; position: absolute;">
+    <header id="header" class="header " style="background-color: #1a2735; z-index: 2; position: absolute;">
         <div class="primary-header">
             <div class="container">
                 <div class="primary-header-inner">
@@ -219,7 +219,8 @@
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <textarea id="license-number" name="license-number" cols="30" rows="5"
-                                        class="form-control message" placeholder="Número de licencia" required></textarea>
+                                        class="form-control message" placeholder="Número de licencia"
+                                        required></textarea>
                                 </div>
                             </div>
                             <div class="form-group colum-row row">
@@ -238,7 +239,10 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <button id="submit" class="default-btn" type="submit">Send</button>
+                                    <button id="submit-contractor-form" class="default-btn" type="submit">
+                                        <div id="spinner-contractor" class="d-none spinner-loading"></div>
+                                        <span>Send Info</span>
+                                    </button>
                                 </div>
                             </div>
                             <div id="contract-form-messages" class="alert alert-danger d-none" role="alert"></div>
@@ -283,42 +287,53 @@
 
     <footer id="footer" class="widget-section pt-5">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-2 col-sm-6 sm-padding">
+            <div class="row px-3">
+
+                <div class="col-lg-3 sm-padding">
                     <div class="widget-content">
-                        <a href="#"><img src="../img/logo-final-lite-1.png" alt="gree-department-logo"
+                        <a href="index.html"><img src="../img/logo-final-lite-1.png" alt="gree-department-logo"
                                 style="max-width: 6rem;"></a></a>
-                        <p>Ayudamos a muchos a construir un mundo mejor. Ahora es tu turno </p>
+                        <p>Ayudamos a muchos a construir un mundo mejor. Ahora es tu turno</p>
                     </div>
                 </div>
-                <div class="col-lg-4 offset-lg-2">
-                    <div class="widget-content">
-                        <h4>Dirección</h4>
-                        <p>1200 Brickell Ave Unit #2020 Miami, FL 33131</p>
+
+                <div class="col-lg-3 offset-lg-1">
+                    <div class="widget-content mb-3">
+                        <h4>Navegue a</h4>
+                        <ul>
+                            <li><a href="home.html#services" data-scroll
+                                    style="text-decoration: none; color: #8d9aa8;">Servicios</a></li>
+                            <li><a href="contractor.html" style="text-decoration: none; color: #8d9aa8;">Obtener
+                                    certificado</a></li>
+                        </ul>
                     </div>
-                </div>
-                <div class="col-lg-4 col-sm-6 sm-padding">
                     <div class="widget-content">
                         <h4>Email</h4>
                         <p>info@greendepartment.org</p>
                     </div>
+                </div>
+
+                <div class="col-lg-3 offset-lg-1 sm-padding">
                     <div class="widget-content">
-                        <h4>Phone</h4>
+                        <h4>Dirección</h4>
+                        <p>1200 Brickell Ave Unit #2020 Miami, FL 33131</p>
+                    </div>
+                    <div class="widget-content">
+                        <h4>Teléfono</h4>
                         <p> +1 (844) 350-6446</p>
                     </div>
                 </div>
             </div>
-            <footer class="footer-section align-center">
+            <div class="footer-section align-center">
                 <div class="container">
-                    <p>Green Department <span id="footer-year">2020</span></p>
+                    <p>Green Department ® <span id="footer-year">2020</span></p>
                 </div>
-            </footer>
+            </div>
         </div>
     </footer>
-
     <a data-scroll href="#header" id="scroll-to-top"><i class="arrow_carrot-up"></i></a>
 
-    <!-- Modal-1 -->
+    <!-- Modal-1 (Cotización) -->
     <div class="modal fade" id="modal-1" tabindex="-1" role="dialog" aria-labelledby="modal1Label" aria-hidden="true"
         style="top:8rem">
         <div class="modal-dialog" role="document">
@@ -336,7 +351,7 @@
                                     <label class="input-group-text" for="inputGroupSelect01">Servicio</label>
                                 </div>
                                 <select class="custom-select" name="service" style="border-radius: 0 12px 12px 0;">
-                                    <option selected disabled>Elija...</option>
+                                    <option value="none" selected disabled>Elija...</option>
                                     <option value="HVAC">HVAC</option>
                                     <option value="Addition">Adición</option>
                                     <option value="City Permits">Permisos de ciudad</option>
@@ -386,8 +401,16 @@
                                     placeholder="Número de telefono">
                             </div>
                             <div class="row justify-content-end">
-                                <button type="submit" class="btn btn-success"><i class="arrow_carrot-2right_alt2"></i>
-                                    Listo</button>
+                                <!-- Messages Error-->
+                                <div id="messages-form"
+                                    class="col d-none text-white text-center alert alert-danger mx-3 p-0 "></div>
+                                <!--/ Messages Error-->
+                                <button type="submit" id="form-1-btn-go" class="btn btn-success"
+                                    style="max-height: 38px;">
+                                    <div id="spinner-loader-modal-1" class="d-none spinner-loading"></div>
+                                    <i class="arrow_carrot-2right_alt2"></i>
+                                    <span id="">Go</span>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -399,7 +422,87 @@
     </div>
     <!--/ Modal-1 -->
 
-    <!-- Modal-2 -->
+    <!-- Modal-1.2 (Urgente) -->
+    <div class="modal fade" id="modal-1-two" tabindex="-2" role="dialog" aria-labelledby="modal1Label"
+        aria-hidden="true" style="top:8rem">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body popup">
+                    <!--/ .modal-content -->
+
+                    <!-- Modal Imagen -->
+                    <div class="img" style="background-image: url('../img/modal-1.jpeg');"></div>
+
+                    <div class="container-text">
+                        <h3 class="h1" style="color: #263a4f;">Solo un paso más!</h3>
+                        <p>2/2 solo falta responder.
+                        </p>
+
+                        <form id="modal-1-two-form">
+                            <div class="input-group mb-3 input-group-sm">
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputEmergencySelect">¿Es una
+                                            emergencia?</label>
+                                    </div>
+                                    <select class="custom-select" name="inputEmergencySelect" id="inputEmergencySelect">
+                                        <option value="not" selected>No es una emergencia</option>
+                                        <option value="yes">¡Tengo una emergerncia!</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="inputOwnerSelect">¿Ud. es
+                                        propietario?</label>
+                                </div>
+                                <select class="custom-select" name="inputOwnerSelect" id="inputOwnerSelect">
+                                    <option value="owner" selected>Soy propietario</option>
+                                    <option value="desicionMarket">Soy encargado del hogar</option>
+                                    <option value="notOwner">No soy propietario</option>
+                                </select>
+                            </div>
+
+                            <h4>Cuentanos sobre tu proyecto</h4>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="icon_document_alt"></i> </span>
+                                </div>
+                                <textarea name="textAreaProject" class="form-control"
+                                    aria-label="With textarea"></textarea>
+                            </div>
+
+                            <div class="text-muted text-center my-3">
+                                He leído y acepto los <a href="terms&conditions.html" target="_blank">Términos y Condiciones</a>
+                            </div>
+                            <div class="row justify-content-end">
+                                <!-- Messages Error-->
+                                <div id="messages-form-two"
+                                    class="col d-none text-white text-center alert alert-danger mx-3 p-0 "></div>
+                                <!--/ Messages Error-->
+                                <button type="submit" id="form-2-btn-go" class="btn btn-success"
+                                    style="max-height: 38px;">
+                                    <div id="spinner-loader-modal-2" class="d-none spinner-loading"></div>
+                                    <i class="arrow_carrot-2right_alt2"></i>
+                                    <span id="">Go</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!--/ .modal-container -->
+                    <a href="#" class="btn-close-popup" data-dismiss="modal">X</a>
+                </div>
+                <!--/ .modal-body -->
+            </div>
+            <!--/ .modal-content -->
+        </div>
+        <!--/ .modal-dialog -->
+    </div>
+    <!--/ Modal-1.2 -->
+
+    <!-- Modal-2 (Gracias por cotizar)-->
     <div class="modal fade" id="modal-2" tabindex="-1" role="dialog" aria-labelledby="modal1Label" aria-hidden="true"
         style="top:8rem">
         <div class="modal-dialog" role="document">
@@ -434,8 +537,8 @@
     </div>
     <!--/ Modal-2 -->
 
-        <!-- Modal-4 -->
-        <div class="modal fade" id="modal-4" tabindex="-1" role="dialog" aria-labelledby="modal1Label" aria-hidden="true"
+    <!-- Modal-4 (Mensaje enviado) -->
+    <div class="modal fade" id="modal-4" tabindex="-1" role="dialog" aria-labelledby="modal1Label" aria-hidden="true"
         style="top:8rem">
         <div class="modal-dialog" role="document">
             <div class="modal-content" style="max-width: 35rem; max-height: 21rem;">
@@ -450,7 +553,8 @@
                                 <div class="icon-fix"></div>
                             </div>
                         </div>
-                        <h3 class="h1 display-md-4  text-center">Message sent successfully <br> we will contact you soon</h3>
+                        <h3 class="h1 display-md-4  text-center">Message sent successfully <br> we will contact you soon
+                        </h3>
                     </div>
 
                     <a href="#" class="btn-close-popup" data-dismiss="modal">X</a>
