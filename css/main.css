@@ -4,6 +4,7 @@
   padding: 0;
   margin: 0;
 }
+
 body {
   background-color: #fff;
   font-family: source sans pro, sans-serif;
@@ -15,6 +16,7 @@ body {
   position: relative;
   overflow-x: hidden;
 }
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -900,6 +902,7 @@ button {
   background-image: url(../img/d-slide-6.jpg);
   background-repeat: no-repeat;
   background-position: center center;
+  background-attachment: fixed;
   background-size: cover;
   position: relative;
   width: 100%;
@@ -2187,6 +2190,7 @@ blockquote span {
 .Hero {
   /*background-image: url("https://colorlib.com/preview/theme/woodrox/img/banner/home-banner.jpg");*/
   background-image: url("../img/post-5.jpg");
+  /*background-image: url('../img//hero_.jpg');*/
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -2389,7 +2393,9 @@ ul.dl-menu > li > a {
 
 @media screen and (max-width: 1200px){
   .ig-post-img{
-    min-height: 20.625rem ;
+    /*min-height: 20.625rem ;*/
+    min-height: 20rem ;
+    height: 290px;
   }
 }
 
@@ -2435,6 +2441,7 @@ ul.dl-menu > li > a {
   flex-direction: column;
   font-size: 12px;
   display: flex;
+  transition: all 1s ease-in-out;
 }
 
 .bttn-text p{
@@ -2784,6 +2791,12 @@ ul.dl-menu > li > a {
 .loadMore{
   transition: all 5s ease;
 }
+
+.modal-error{
+  max-height: 21rem !important;
+}
+
+
 @media screen and (max-width:692px){
   .modal-error{
     max-height: 28rem !important;
@@ -3125,4 +3138,129 @@ ul.dl-menu > li > a {
   .testi-content h3{
     font-size: 18px;
   }
+}
+
+
+
+/*-------------------------*/
+
+.thin-shade {
+  background: #ff760712;
+  border-radius: 3rem;
+  font: 4rem 'Montserrat', sans-serif;
+  margin-bottom: 3rem;
+  max-width: 511px;
+  text-transform: uppercase;
+  letter-spacing: 0.35rem;
+  color: #00c819;
+  padding: 0 10px;
+  text-shadow: -4px 1px 0 rgb(255, 118, 7);  
+  animation: bglog 4s infinite ease-in-out;
+}
+@keyframes bglog{
+  0%{
+    background: #ff760712;
+  }
+  70%{
+    background: #167e2463;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .thin-shade{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 1.2rem auto;
+    font-size: 2.5rem;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 500){
+  .thin-shade{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
+    font-size: 2.5rem;
+    text-align: center;
+  }
+}
+
+.center__text {
+  margin: auto;
+  text-transform: uppercase;
+}
+.glitch {
+  position: relative;
+  mix-blend-mode: lighten;
+}
+.glitch:before, .glitch:after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background: black;
+  clip: rect(0, 0, 0, 0);
+}
+.glitch:before {
+  left: -1px;
+  text-shadow: 1px 0 rgba(255, 0, 0, 0.7);
+}
+.glitch:after {
+  left: 1px;
+  text-shadow: -1px 0 rgba(0, 0, 255, 0.7);
+}
+.glitch:hover:before {
+  text-shadow: 4px 0 rgba(255, 0, 0, 0.7);
+  animation: glitch-loop-1 0.8s infinite ease-in-out alternate-reverse;
+}
+.glitch:hover:after {
+  text-shadow: -5px 0 rgba(0, 0, 255, 0.7);
+  animation: glitch-loop-2 0.8s infinite ease-in-out alternate-reverse;
+}
+@keyframes glitch-loop-1 {
+  0% {
+    clip: rect(36px, 9999px, 9px, 0);
+ }
+  25% {
+    clip: rect(25px, 9999px, 99px, 0);
+ }
+  50% {
+    clip: rect(50px, 9999px, 102px, 0);
+ }
+  75% {
+    clip: rect(30px, 9999px, 92px, 0);
+ }
+  100% {
+    clip: rect(91px, 9999px, 98px, 0);
+ }
+}
+@keyframes glitch-loop-2 {
+  0% {
+    top: -1px;
+    left: 1px;
+    clip: rect(65px, 9999px, 119px, 0);
+ }
+  25% {
+    top: -6px;
+    left: 4px;
+    clip: rect(79px, 9999px, 19px, 0);
+ }
+  50% {
+    top: -3px;
+    left: 2px;
+    clip: rect(68px, 9999px, 11px, 0);
+ }
+  75% {
+    top: 0px;
+    left: -4px;
+    clip: rect(95px, 9999px, 53px, 0);
+ }
+  100% {
+    top: -1px;
+    left: -1px;
+    clip: rect(31px, 9999px, 149px, 0);
+ }
 }

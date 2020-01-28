@@ -130,11 +130,19 @@
         <div class="container">
             <div class="row align-items-center" style="height: 100vh;">
                 <div class="col-lg-8 mt-md-6 mb-5">
+                    <div class="wow bounceInDown">
+                        <section class="thin-shade">
+                            <div data-text="Green" class="center__text glitch is-glitching" style="top:30px">Green</div>
+                            <br>
+
+                            <div data-text="Department" class="center__text glitch is-glitching" style="top:-30px">
+                                Department</div>
+                        </section>
+                    </div>
                     <div>
                         <h2 class="text-white">Get a free estimate</h2>
-                        <p class="text-info">We are dedicated to bridging support for your home. <br> Thousands of
-                            owners of
-                            houses recommend us.</p>
+                        <p class="text-info">We are dedicated to providing the best solution for your home.<br>
+                            Thousands of owners recommend us.</p>
                         <a href="#" class="default-btn" data-toggle="modal" data-target="#modal-1"></i>Schedule now! <i
                                 class="arrow_right"></i></a>
                     </div>
@@ -223,6 +231,10 @@
         <div class="container">
             <div class="row about-wrap">
                 <div class="col-lg-6 sm-padding">
+                    <figure style="max-width: 400px; margin: 0 auto">
+                        <img src="../img/gif_1.webp"
+                            alt="free_estimate">
+                    </figure>
                     <div class="about-content wow fadeInLeft">
                         <h2>Get a free estimate</h2>
 
@@ -329,7 +341,7 @@
                             of all the projects you have in your home. Guaranteed.</p>
                     </div>
                 </div>
-                <div class="col-lg-6 sm-padding">
+                <div class="col-lg-6 sm-padding wow bounceInRight">
                     <div class="row services-list justify-content-center">
                         <img src="../img/cover-min-1.png" alt="hause" style=" -webkit-transform: scaleX(-1);
                             -moz-transform: scaleX(-1);
@@ -349,6 +361,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
+                    <h2 class="mb-5 text-center">Our Services</h2>
                     <div id="service-carousel" class="service-carousel box-shadow owl-carousel">
                         <!-- 1 -->
                         <div class="service-item ServicesSlider">
@@ -511,13 +524,17 @@
 
     <section id="count" class="counter-section padding">
         <div class="container">
+            <figure style="max-width: 150px; display: flex; margin: 0 auto;">
+                <img src="../img/gif_2.webp"
+                    alt="out_numbers" style="border-radius: 50rem;">
+            </figure>
             <div class="row justify-content-center">
                 <h2 class="my-3 text-white">Our numbers</h2>
             </div>
             <div class="row counter-wrap justify-content-center">
                 <div class="col-lg-3 col-sm-6 padding-15">
                     <div class="counter-content wow fadeInUp" data-wow-delay="300ms">
-                        <div class="counter"><span class="odometer" data-count="9102">00</span></div>
+                        <div class="counter"><span class="odometer" data-count="5102">00</span></div>
                         <h4>Finished Projects</h4>
                     </div>
                 </div>
@@ -577,7 +594,7 @@
     <!-- Instagram -->
     <section class="projects-section padding">
         <div id="ig-container" class="container">
-            
+
             <div class="row align-items-center justify-content-center flex-column my-3">
 
                 <a href="https://instagram.com/greendepartmentfl" target="_blank" class="btn-ig mb-5">
@@ -607,7 +624,7 @@
                     <i class="social_instagram_circle" style="font-size: 2rem; color:white; margin: 0 1rem;"></i>
                 </button>
             </div>
-            
+
         </div>
     </section>
     <!--/ Instagram-->
@@ -675,10 +692,11 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <button id="btn-submit-contact" class="default-btn" type="submit" style="cursor: pointer;">
+                                    <button id="btn-submit-contact" class="default-btn" type="submit"
+                                        style="cursor: pointer;">
                                         <div id="spinner-contact" class="d-none spinner-loading"></div>
                                         <span>Send Message</span>
-                                    </button> 
+                                    </button>
                                 </div>
                             </div>
                             <div id="contact-form-messages" class="alert alert-danger d-none" role="alert"></div>
@@ -736,16 +754,18 @@
                     <div class="widget-content mb-3">
                         <h4>Browse</h4>
                         <ul>
-                            <li><a href="home.html#services" data-scroll  style="text-decoration: none; color: #8d9aa8;">Services</a></li>
-                            <li><a href="contractor.html" style="text-decoration: none; color: #8d9aa8;">Certified Contractor</a></li>
+                            <li><a href="home.html#services" data-scroll
+                                    style="text-decoration: none; color: #8d9aa8;">Services</a></li>
+                            <li><a href="contractor.html" style="text-decoration: none; color: #8d9aa8;">Certified
+                                    Contractor</a></li>
                         </ul>
                     </div>
                     <div class="widget-content">
                         <h4>Email</h4>
                         <p>info@greendepartment.org</p>
-                    </div>                    
+                    </div>
                 </div>
-                <div class="col-lg-3 sm-padding offset-lg-1">                    
+                <div class="col-lg-3 sm-padding offset-lg-1">
                     <div class="widget-content">
                         <h4>Address</h4>
                         <p>1200 Brickell Ave Unit #2020 Miami, FL 33131</p>
@@ -837,10 +857,11 @@
                                 <div id="messages-form"
                                     class="col d-none text-white text-center alert alert-danger mx-3 p-0 "></div>
                                 <!--/ Messages Error-->
-                                <button type="submit" id="form-1-btn-go" class="btn btn-success" style="max-height: 38px;">
+                                <button type="submit" id="form-1-btn-go" class="btn btn-success"
+                                    style="max-height: 38px;">
                                     <div id="spinner-loader-modal-1" class="d-none spinner-loading"></div>
                                     <i class="arrow_carrot-2right_alt2"></i>
-                                    <span id="">Go</span>    
+                                    <span id="">Go</span>
                                 </button>
                             </div>
                         </form>
@@ -905,17 +926,19 @@
                             </div>
 
                             <div class="text-muted text-center my-3">
-                                I have read and accept the <a href="terms&conditions.html" target="_blank">Terms & Conditions</a>
+                                I have read and accept the <a href="terms&conditions.html" target="_blank">Terms &
+                                    Conditions</a>
                             </div>
                             <div class="row justify-content-end">
                                 <!-- Messages Error-->
                                 <div id="messages-form-two"
                                     class="col d-none text-white text-center alert alert-danger mx-3 p-0 "></div>
                                 <!--/ Messages Error-->
-                                <button type="submit" id="form-2-btn-go" class="btn btn-success" style="max-height: 38px;">
+                                <button type="submit" id="form-2-btn-go" class="btn btn-success"
+                                    style="max-height: 38px;">
                                     <div id="spinner-loader-modal-2" class="d-none spinner-loading"></div>
                                     <i class="arrow_carrot-2right_alt2"></i>
-                                    <span id="">Go</span>    
+                                    <span id="">Go</span>
                                 </button>
                             </div>
                         </form>

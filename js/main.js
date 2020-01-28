@@ -180,8 +180,8 @@
   $("#service-carousel").owlCarousel({
     loop: true,
     margin: 0,
-    autoplay: false,
-    smartSpeed: 800,
+    autoplay: 300,
+    smartSpeed: 300,
     nav: true,
     navText: [
       '<i class="fa fa-caret-left"></i>',
@@ -317,9 +317,11 @@
   /*=========================================================================
 	WOW Active
 =========================================================================*/
-
-  new WOW().init();
-
+  window.onload = function() {
+    new WOW({
+      offset: 150
+    }).init();
+  };
   /*=========================================================================
     Active venobox
 =========================================================================*/
@@ -467,70 +469,84 @@ if (window.location.pathname.split("/")[2] === "home.html") {
       });
   });
 
-  // Call API Media
-  let postsArray = axios
-    .get(`${endpoint}/media/recent?access_token=${token}`)
-    .then(({ data: { data: posts } }) => posts)
-    .catch(e => {
-      console.error(e);
-    });
-
-  // Set firts posts
-  postsArray
-    .then(posts => {
-      posts.forEach((e, i) => {
-        if (window.screen.width < 500 && i < 4) {
-          igContainer.append(
-            post(e.images.low_resolution.url, e.link, e.videos)
-          );
-          indexIgItem = indexIgItem + 1;
-        }
-        if (window.screen.width > 500 && i < 9) {
-          igContainer.append(
-            post(e.images.low_resolution.url, e.link, e.videos)
-          );
-          indexIgItem = indexIgItem + 1;
-        }
+  try {
+    // Call API Media
+    let postsArray = axios
+      .get(`${endpoint}/media/recent?access_token=${token}`)
+      .then(({ data: { data: posts } }) => posts)
+      .catch(err => {
+        console.error(err);
+        throw new Error();
       });
-    })
-    .catch(err => console.error(err));
 
-  // Set post per click
-  indexIgItem = indexIgItem - 4;
-  const loadButton = $("#loadMoreButton");
-  loadButton.click(() => {
-    console.log("Index init: ", indexIgItem);
-    postsArray.then(posts => {
-      posts.forEach((e, i) => {
-        if (window.screen.width < 500) {
-          if (indexIgItem + 1 < i && i < indexIgItem + 4 && i < posts.length) {
-            igContainer.append(
-              post(e.images.low_resolution.url, e.link, e.videos)
-            );
+    // Set firts posts
+    postsArray &&
+      postsArray
+        .then(posts => {
+          igContainer.empty();
+          posts.forEach((e, i) => {
+            if (window.screen.width < 500 && i < 4) {
+              igContainer.append(
+                post(e.images.low_resolution.url, e.link, e.videos)
+              );
+              indexIgItem = indexIgItem + 1;
+            }
+            if (window.screen.width > 500 && i < 9) {
+              igContainer.append(
+                post(e.images.low_resolution.url, e.link, e.videos)
+              );
+              indexIgItem = indexIgItem + 1;
+            }
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          throw new Error();
+        });
+
+    // Set post per click
+    indexIgItem = indexIgItem - 4;
+    const loadButton = $("#loadMoreButton");
+    loadButton.click(() => {
+      loadButton.addClass('wow slideInDown')
+      postsArray.then(posts => {
+        posts.forEach((e, i) => {
+          if (window.screen.width < 500) {
+            if (
+              indexIgItem + 1 < i &&
+              i < indexIgItem + 4 &&
+              i < posts.length
+            ) {
+              igContainer.append(
+                post(e.images.low_resolution.url, e.link, e.videos, true)
+              );
+            }
           }
-        }
-        if (window.screen.width > 500) {
-          if (indexIgItem < i && i < indexIgItem + 4 && i < posts.length) {
-            igContainer.append(
-              post(e.images.low_resolution.url, e.link, e.videos)
-            );
+          if (window.screen.width > 500) {
+            if (indexIgItem < i && i < indexIgItem + 4 && i < posts.length) {
+              igContainer.append(
+                post(e.images.low_resolution.url, e.link, e.videos,true)
+              );
+            }
           }
-        }
-        if (indexIgItem + 3 >= posts.length - 1) {
-          loadButton.addClass("d-none");
-        }
+          if (indexIgItem + 3 >= posts.length - 1) {
+            loadButton.addClass("d-none");
+          }
+        });
       });
+      if (window.screen.width > 500) {
+        indexIgItem = indexIgItem + 3;
+      } else {
+        indexIgItem = indexIgItem + 2;
+      }
     });
-    if (window.screen.width > 500) {
-      indexIgItem = indexIgItem + 3;
-    } else {
-      indexIgItem = indexIgItem + 2;
-    }
-  });
+  } catch (err) {
+    console.error("Catch error: ", err);
+  }
 }
 
-const post = (urlImage, linkPost, isVideo) => {
-  return `<div class="col-lg-4 col-sm-6 padding-15 loadMore">
+const post = (urlImage, linkPost, isVideo, animated) => {
+  return `<div class="col-lg-4 col-sm-6 padding-15 loadMore ${animated? 'wow slideInUp':''}" ${animated? 'data-wow-delay="0.4s"':''}>
         <a href="${linkPost}" target="_blank" class="view-icon ajax-popup-link">
         <div class="project-item">
             ${(isVideo &&
@@ -553,6 +569,7 @@ const post = (urlImage, linkPost, isVideo) => {
 =========================================================================*/
 var modal1Form = document.getElementById("modal-1-form");
 var spinnerModal1 = document.getElementById("spinner-loader-modal-1");
+var btnModal1 = document.getElementById('form-1-btn-go');
 var modalData = {};
 
 modal1Form.addEventListener("submit", function(e) {
@@ -617,7 +634,7 @@ modal1Form.addEventListener("submit", function(e) {
 
   console.log(modalData);
 
-  try {    
+  try {
     requestData("estimate_1", modalData, "modal-1", spinnerModal1);
   } catch (error) {
     console.error(error);
@@ -778,10 +795,9 @@ if (window.location.pathname.split("/")[2] === "contractor.html") {
 if (window.location.pathname.split("/")[2] === "home.html") {
   var contactForm = document.getElementById("contact-form");
   var messenger = document.getElementById("contact-form-messages");
-  var spinnerContact = document.getElementById('spinner-contact');
-  console.log(spinnerContact)
+  var spinnerContact = document.getElementById("spinner-contact");
   contactForm.addEventListener("submit", function(e) {
-    console.log(spinnerContact)
+    console.log(spinnerContact);
     e.preventDefault();
 
     var name = contactForm["name"].value;
@@ -836,7 +852,6 @@ function messageSuccess(e) {
     "Your message has been sent successfully, we will contact you soon.";
 }
 
-
 function messageError(e, message) {
   e.innerHTML = message;
   e.classList.remove("d-none");
@@ -846,16 +861,16 @@ function messageError(e, message) {
   }, 8000);
 }
 
-const requestData = async (URI, data, messenger, spinner) => {
+async function requestData(URI, data, messenger, spinner) {
   var URI_PROD = `https://nextgraphtest.firebaseapp.com/api/landing/email/${URI}`;
   //var URI_DEV = `http://localhost:5000/api/landing/email/${URI}`;
-  var URI_TEST = `http://localhost:5001/nextgraphtest/us-central1/app/api/landing/email/${URI}`;
+  //var URI_TEST = `http://localhost:5001/nextgraphtest/us-central1/app/api/landing/email/${URI}`;
 
   console.log(messenger);
-  spinner.classList.remove('d-none');
+  spinner.classList.remove("d-none");
 
   try {
-    await fetch(URI_TEST, {
+    await fetch(URI_PROD, {
       method: "POST",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
@@ -864,41 +879,33 @@ const requestData = async (URI, data, messenger, spinner) => {
       body: JSON.stringify({ ...data })
     })
       .then(res => {
-        
         console.log("Message Success: ", res);
-        spinner.classList.add('d-none');
-        
+        spinner.classList.add("d-none");
+
         if (messenger === "modal-1") {
-          
           $("#modal-1").modal("hide");
           $("#modal-1-two").modal("show");
-  
         } else if (messenger === "modal-2") {
-          
           $("#modal-1-two").modal("toggle");
           $("#modal-2").modal("show");
-  
         } else {
-          
           return messageSuccess(messenger);
-  
         }
 
-        if(res.status >= 400){
-          $("#modal-5").modal("show");  
+        if (res.status >= 400) {
+          $("#modal-5").modal("show");
         }
       })
       .catch(err => {
         $("#modal-5").modal("show");
-        console.log("Dimelo flow")
+        console.log("Dimelo flow");
         console.error(err);
-        spinner.classList.add('d-none');
+        spinner.classList.add("d-none");
       });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     $("#modal-5").modal("show");
   }
-
-
-
 }
+
+$("hause-services").fadeIn();
