@@ -3176,7 +3176,7 @@ ul.dl-menu > li > a {
     text-align: center;
   }
 }
-
+/*---------------->weep*/
 @media screen and (max-width: 500){
   .thin-shade{
     display: flex;
@@ -3263,4 +3263,10 @@ ul.dl-menu > li > a {
     left: -1px;
     clip: rect(31px, 9999px, 149px, 0);
  }
+}
+
+@media (max-width: 991px) and (orientation: landscape){
+  .r-aux{
+    display: none !important;
+  }
 }

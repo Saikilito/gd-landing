@@ -599,7 +599,7 @@ modal1Form.addEventListener("submit", function(e) {
     messageError(messenger, "The adress should have at least ten (10) letters");
     return modal1Form["adress"].focus();
   }
-  console.log(zip);
+
   if (zip.length < 3 || zip === "") {
     console.log("zip");
     messageError(messenger, "The zip code is not valid");
@@ -614,11 +614,11 @@ modal1Form.addEventListener("submit", function(e) {
     messageError(messenger, "The email is not valid");
     return modal1Form["email"].focus();
   }
-  if (phone.length < 11) {
+  if (phone.length < 9) {
     console.log("phone");
     messageError(
       messenger,
-      "The phone should have <br> at least seven (11) digits"
+      "The phone should have <br> at least nine (9) digits"
     );
     return modal1Form["phone"].focus();
   }
@@ -756,10 +756,10 @@ if (window.location.pathname.split("/")[2] === "contractor.html") {
         "The Location must be at least five (5) characters long"
       );
     }
-    if (licenseNumber.length < 12) {
+    if (licenseNumber.length < 7) {
       return messageError(
         messenger,
-        "The License Number must be at least twelve (12) characters long"
+        "The License Number must be at least seven (7) characters long"
       );
     }
     if (zipCode < parseInt(9)) {
