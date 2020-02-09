@@ -180,7 +180,7 @@
   $("#service-carousel").owlCarousel({
     loop: true,
     margin: 0,
-    autoplay: 300,
+    autoplay: true,
     smartSpeed: 300,
     nav: true,
     navText: [
@@ -204,14 +204,10 @@
     }
   });
 
-  /*=========================================================================
-    Projects Carousel
-=========================================================================*/
-  $("#projects-carousel").owlCarousel({
-    loop: true,
+  $('.owl-carousel').owlCarousel({loop: true,
     margin: 0,
-    autoplay: false,
-    smartSpeed: 500,
+    autoplay: true,
+    smartSpeed: 300,
     nav: true,
     navText: [
       '<i class="fa fa-caret-left"></i>',
@@ -222,8 +218,8 @@
       0: {
         items: 1
       },
-      580: {
-        items: 2
+      480: {
+        items: 1
       },
       768: {
         items: 2
@@ -232,37 +228,7 @@
         items: 4
       }
     }
-  });
-
-  /*=========================================================================
-    Project Single Carousel
-=========================================================================*/
-  $("#project-single-carousel").owlCarousel({
-    loop: true,
-    margin: 5,
-    autoplay: true,
-    smartSpeed: 500,
-    nav: false,
-    navText: [
-      '<i class="fa fa-caret-left"></i>',
-      '<i class="fa fa-caret-right"></i>'
-    ],
-    dots: true,
-    responsive: {
-      0: {
-        items: 1
-      },
-      480: {
-        items: 1
-      },
-      768: {
-        items: 1
-      },
-      992: {
-        items: 1
-      }
-    }
-  });
+  })
 
   /*=========================================================================
     Sponsor Carousel
@@ -317,10 +283,51 @@
   /*=========================================================================
 	WOW Active
 =========================================================================*/
-  window.onload = function() {
+  window.onload = async function() {
     new WOW({
       offset: 150
     }).init();
+
+    $('#h-description').addClass("animated bounceInLeft");
+
+    let hItems = document.querySelectorAll('.mh-item');
+
+    hItems.forEach((e,i)=>{
+      e.classList.add('animated');
+      e.classList.add('bounceInUp');
+      e.classList.add(`h-delay-${i}`);
+    });
+
+    setTimeout(()=>{
+      const hCarousel = $('#h-s-carousel').addClass('owl-carousel owl-theme none-animation');
+      hCarousel.stop()
+
+      hCarousel.owlCarousel({
+        loop:true,
+        animateOut: false,
+        animateIn: false,
+        margin:0,
+        autoplay: true,
+        smartSpeed: 250,
+        fallbackEasing:false,
+        nav:false,
+        responsive:{
+          0: {
+            items: 2
+          },
+          480: {
+            items: 3
+          },
+          768: {
+            items: 5
+          },
+          992: {
+            items: 6
+          }
+        }
+    });
+    },1800)
+
   };
   /*=========================================================================
     Active venobox
