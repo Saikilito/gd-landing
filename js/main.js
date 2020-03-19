@@ -290,20 +290,28 @@
 
     $('#h-description').addClass("animated bounceInLeft");
 
-    let hItems = document.querySelectorAll('.mh-item');
+    const hCarousel = $('#h-s-carousel')
+    let timeClass = 1800;
 
+    let hItems = document.querySelectorAll('.mh-item');
     hItems.forEach((e,i)=>{
-      e.classList.add('animated');
-      e.classList.add('bounceInUp');
-      e.classList.add(`h-delay-${i}`);
-    });
+      if(window.screen.width < 1200){
+        hCarousel.addClass('d-none');
+        timeClass = 500
+      }
+        e.classList.add('animated');
+        e.classList.add('bounceInUp');
+        e.classList.add(`h-delay-${i}`);
+      });
 
     setTimeout(()=>{
-      const hCarousel = $('#h-s-carousel').addClass('owl-carousel owl-theme none-animation');
+      hCarousel.removeClass('d-none')
+      hCarousel.addClass('owl-carousel owl-theme none-animation');
       hCarousel.stop()
 
       hCarousel.owlCarousel({
         loop:true,
+        center:true,
         animateOut: false,
         animateIn: false,
         margin:0,
@@ -326,7 +334,7 @@
           }
         }
     });
-    },1800)
+    },timeClass)
 
   };
   /*=========================================================================
